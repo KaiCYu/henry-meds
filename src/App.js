@@ -1,25 +1,41 @@
-import logo from './logo.svg';
+import { useContext } from 'react';
+import { AppContext } from './AppContext';
+import { Button } from 'react-bootstrap';
+
+// import { Provider } from './Provider';
+// import { Client } from './Client';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+const setProvider = () => {
+  const providerContext = {
+    availability: [],
+  };
+}
+
+
+const setClient = () => {
+  const clientContext = {};
+}
 
 function App() {
+  const context = useContext(AppContext);
+  console.log('context::: ', context)
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      Are you a client or a provider?
+      
+      <div>
+        <Button variant="primary">Provider</Button>
+        <Button variant="primary">Client</Button>
+      </div>
       </header>
     </div>
   );
 }
+
 
 export default App;
