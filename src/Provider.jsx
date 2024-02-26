@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import { find, toNumber } from 'lodash';
 
-import { useAppContext, defaultContext } from './AppContext';
+import { useAppContext } from './AppContext';
 
 const GO_HOME_OBJECT = {
   userId: undefined, 
@@ -21,7 +21,7 @@ const Provider = () => {
   const currentProviderAvailability = find(providerAvailability, (p) => p.providerId == providerId) // Be careful here, it could change to a string or number!
 
   const handleGoBack = () => {
-    setContext(defaultContext)
+    setContext({...context, ...GO_HOME_OBJECT})
   }
 
   const saveAvailability = () => {
