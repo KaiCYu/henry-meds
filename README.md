@@ -42,14 +42,27 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 Figma wireframe link: https://www.figma.com/file/JzMpjtZL9MXdsqCbILotFs/Untitled?type=design&node-id=0%3A1&mode=design&t=CZLADRCbVngaBLKl-1
 
 TODO/Nice to Haves:
+General/overall:
 - Better CSS/layout
+- Add API mocks instead of hardcoded data
+  - Add network mock (fake a promise) and add loading spinner
+- Refactor components and file structure
+- Use a flatter data structure (denormalize the reservation data so it's easier to manipulate)
 - Convert to TS
+- General readability
+- Replace alerts/confirms with actual modals (bootstrap modal CSS wasnt working out of the box)
+- Probably didn't actually need React context, but setup anyways
+- Better route handling instead of relying on userId/isProvider/isClient
+- More generalized utilities (setting the context, handling the back button better, etc)
+- Improve createTimeslots to take into account exclusions (like weekends, nights, etc), or just use a better library lol
+
+Provider side
 - Show current provider set availability and/or confirmed schedule
-- Allow multiple timeframes for provider availability
+- Allow multiple timeframes for provider availability ()
 - Allow provider to cancel/delete reservation
 - Add error handling/form validation to Provider form
 - Allow timezone selection and localize TZ
 
-- Add API mocks
-- Add network mock (fake a promise) and add loading spinner
-- 
+Client side
+- Need to filter out provider times that are already confirmed and unconfirmed reservations from the available timeslots
+

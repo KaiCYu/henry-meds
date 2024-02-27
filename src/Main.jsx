@@ -27,7 +27,6 @@ const Main = () => {
     setContext({...context, ...GO_HOME_OBJECT})
   }
 
-  // console.log('context in main:::: ', context);
   return (
     <div className="App">
     <header className="App-header">

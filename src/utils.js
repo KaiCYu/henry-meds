@@ -1,4 +1,4 @@
-import { isAfter, isBefore, add, differenceInMinutes } from 'date-fns'
+import { isBefore, add, differenceInMinutes } from 'date-fns'
 
 const createTimeslots = ({ start, end, interval = 15 }) => {
     const step = (x) => add(x, { minutes: interval });
@@ -51,7 +51,6 @@ const getConfirmedReservations = (clientId, providerAvailability = []) => {
       }
     }))
   });
-  console.log('confirmed::: ', confirmed)
   return confirmed.filter((confirmed) => confirmed.isConfirmed);
 }
 

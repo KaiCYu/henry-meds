@@ -32,6 +32,7 @@ const ProviderAvailabilityCard = ({ provider }) => {
       ...context,
       ...GO_HOME_OBJECT,
     })
+    // add an alert that you've added an unconfirmed reservation
   }
 
   return (
@@ -48,7 +49,9 @@ const ProviderAvailabilityCard = ({ provider }) => {
               // Only show timeslots farther than 24 hours out
               .filter((timeslot) => {
                 return differenceInHours(timeslot, new Date()) >= 24;
-              }).map((timeslot) => {
+              })
+              // TODO: Need to xor the confirmed and unconfirmed timeslots
+              .map((timeslot) => {
                 return (
                   <Timeslot key={timeslot} timeslot={timeslot} onClick={handleReserveTimeslot}/>
                 )
