@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { find, toNumber } from 'lodash';
-import { differenceInMinutes } from 'date-fns';
 
 import { useAppContext } from './AppContext';
 import { ProviderAvailabilityCard } from './ProviderAvailabilityCard';
 import { Timeslot } from './Timeslot';
-import { getUnconfirmedReservations } from './utils';
+import { getConfirmedReservations, getUnconfirmedReservations } from './utils';
 
 const Client = ({ handleGoBack }) => {
   const [clientId, setClientId] = useState('')
   const [clientUnconfirmedRes, setClientUnconfirmedRes] = useState([])
+  const [clientConfirmedRes, setClientConfirmedRes] = useState([])
   const { context, setContext } = useAppContext();
   const { providerAvailability } = context;
 
@@ -19,8 +19,8 @@ const Client = ({ handleGoBack }) => {
       return;
     }
     setClientUnconfirmedRes(getUnconfirmedReservations(clientId, providerAvailability));
+    setClientConfirmedRes(getConfirmedReservations(clientId, providerAvailability))
   }, [clientId, providerAvailability]);
-
 
   const handleOnUserChange = (e) => {
     const userId = toNumber(e.target.value);
@@ -67,27 +67,43 @@ const Client = ({ handleGoBack }) => {
         </Form.Group>
       
         {
-          <>
-            Please confirm your reservations
-            {
-              !!clientId && !!clientUnconfirmedRes.length && (
-                clientUnconfirmedRes
-                  .filter((unconfirmed) => {
-                    return differenceInMinutes(new Date(), unconfirmed.timeReserved) <= 30;
-                  })
+          !!clientId && clientConfirmedRes.length ? (
+            <div>
+              Your confirmed reservations!
+              {
+                clientConfirmedRes
                   .map((res) => {
                     return (
                       <div className="d-flex align-items-center">
-                        <Timeslot key={res.startTime} timeslot={res.startTime} onClick={() => handleTimeslotClick(res)}/>
+                        <Timeslot key={res.startTime} timeslot={res.startTime} onClick={() => {
+                          // Intentionally empty
+                        }}/>
                       </div>
                     )
                   })
-                )
-            }
-          </>
+                }
+            </div>
+          ) : null
+        }
+      
+        {
+          !!clientId && clientUnconfirmedRes.length ?  (
+            <div>
+              Please confirm your reservations
+              {
+                  clientUnconfirmedRes
+                    .map((res) => {
+                      return (
+                        <div className="d-flex align-items-center">
+                          <Timeslot key={res.startTime} timeslot={res.startTime} onClick={() => handleTimeslotClick(res)}/>
+                        </div>
+                      )
+                    })
+                  }
+            </div>
+          ) : null
         }
 
-                  
         {
           !!clientId && providerAvailability
             .map((provider) => {

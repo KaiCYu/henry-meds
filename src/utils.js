@@ -1,4 +1,4 @@
-import { isBefore, add } from 'date-fns'
+import { isAfter, isBefore, add, differenceInMinutes } from 'date-fns'
 
 const createTimeslots = ({ start, end, interval = 15 }) => {
     const step = (x) => add(x, { minutes: interval });
@@ -31,8 +31,33 @@ const getUnconfirmedReservations = (clientId, providerAvailability = []) => {
         unconfirmed.push(reservation)
       }
     }))
-  })
-  return unconfirmed;
+  });
+
+  return unconfirmed.filter((unconfirmed) => {
+    return differenceInMinutes(new Date(), unconfirmed.timeReserved) <= 30;
+  });
 }
 
-export { createTimeslots, formatTimeslots, getUnconfirmedReservations };
+const getConfirmedReservations = (clientId, providerAvailability = []) => {
+  if (!clientId) {
+    return [];
+  }
+
+  const confirmed = [];
+  providerAvailability.forEach(provider => {
+    provider.confirmedReservations.forEach((reservation => {
+      if (reservation.clientId === clientId) {
+        confirmed.push(reservation)
+      }
+    }))
+  });
+  console.log('confirmed::: ', confirmed)
+  return confirmed.filter((confirmed) => confirmed.isConfirmed);
+}
+
+export { 
+  createTimeslots, 
+  formatTimeslots, 
+  getUnconfirmedReservations, 
+  getConfirmedReservations 
+};
