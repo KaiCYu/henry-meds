@@ -1,4 +1,5 @@
 import { Card } from 'react-bootstrap';
+import { differenceInHours } from 'date-fns';
 
 import { useAppContext, GO_HOME_OBJECT } from './AppContext';
 import { createTimeslots } from './utils';
@@ -31,7 +32,6 @@ const ProviderAvailabilityCard = ({ provider }) => {
       ...context,
       ...GO_HOME_OBJECT,
     })
-    
   }
 
   return (
@@ -44,10 +44,14 @@ const ProviderAvailabilityCard = ({ provider }) => {
 
         <div>
           {
-            timeslots.map((timeslot) => {
-              return (
-                <Timeslot key={timeslot} timeslot={timeslot} onClick={handleReserveTimeslot}/>
-              )
+            timeslots
+              // Only show timeslots farther than 24 hours out
+              .filter((timeslot) => {
+                return differenceInHours(timeslot, new Date()) >= 24;
+              }).map((timeslot) => {
+                return (
+                  <Timeslot key={timeslot} timeslot={timeslot} onClick={handleReserveTimeslot}/>
+                )
             })
           }
         </div>

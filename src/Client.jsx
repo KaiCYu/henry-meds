@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { find, toNumber } from 'lodash';
+import { differenceInMinutes } from 'date-fns';
 
 import { useAppContext } from './AppContext';
 import { ProviderAvailabilityCard } from './ProviderAvailabilityCard';
@@ -38,7 +39,6 @@ const Client = ({ handleGoBack }) => {
 
       // TODO: move this out to a util
       // remove the res from unconfirmed, add to confirmed for the provider
-      console.log('res::: ', res)
       res.isConfirmed = true;
 
       const provider = find(providerAvailability, { providerId: res.providerId });
@@ -71,25 +71,30 @@ const Client = ({ handleGoBack }) => {
             Please confirm your reservations
             {
               !!clientId && !!clientUnconfirmedRes.length && (
-                clientUnconfirmedRes.map((res) => {
-                  return (
-                    <div className="d-flex align-items-center">
-                      <Timeslot key={res.startTime} timeslot={res.startTime} onClick={() => handleTimeslotClick(res)}/>
-                    </div>
-                  )
-                })
-              )
+                clientUnconfirmedRes
+                  .filter((unconfirmed) => {
+                    return differenceInMinutes(new Date(), unconfirmed.timeReserved) <= 30;
+                  })
+                  .map((res) => {
+                    return (
+                      <div className="d-flex align-items-center">
+                        <Timeslot key={res.startTime} timeslot={res.startTime} onClick={() => handleTimeslotClick(res)}/>
+                      </div>
+                    )
+                  })
+                )
             }
           </>
         }
-    
+
+                  
         {
-          // filter out confirmed and unconfirmed reservations
-          !!clientId && providerAvailability.map((provider) => {
-            return (
-              <ProviderAvailabilityCard key={`provider-${provider.providerId}`} provider={provider} />
-            )
-          })
+          !!clientId && providerAvailability
+            .map((provider) => {
+              return (
+                <ProviderAvailabilityCard key={`provider-${provider.providerId}`} provider={provider} />
+              )
+            })
         }
       </div>
 

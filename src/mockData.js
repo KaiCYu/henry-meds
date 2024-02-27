@@ -1,4 +1,4 @@
-import { add, roundToNearestMinutes } from 'date-fns';
+import { add, roundToNearestMinutes, sub } from 'date-fns';
 
 // Each reservation has this shape:
 // {
@@ -10,7 +10,7 @@ import { add, roundToNearestMinutes } from 'date-fns';
 //   providerId,
 // }
 
-const startTime = roundToNearestMinutes(new Date(), { roundingMethod: 'ceil', nearestTo: 15 });
+const startTime = add(roundToNearestMinutes(new Date(), { roundingMethod: 'ceil', nearestTo: 15 }), {days: 1 });
 
 const mockSchedule = [
   {
@@ -35,9 +35,19 @@ const mockSchedule = [
         isAvailable: false,
         isConfirmed: false,
         providerId: 1,
+        timeReserved: sub(new Date(), { minutes: 5 }),
+      },
+      {
+        clientId: 5,
+        startTime: add(startTime, { hours: 1, minutes: 30 }),
+        endTime: add(startTime, { hours: 1, minutes: 45 }),
+        isAvailable: false,
+        isConfirmed: false,
+        providerId: 1,
+        timeReserved: sub(new Date(), { minutes: 45 }), // should NOT see this one (this is now expired)
       },
     ]
   },
 ]
 
-export default mockSchedule;
+export default mockSchedule;  
