@@ -6,7 +6,8 @@ import { add, roundToNearestMinutes } from 'date-fns';
 //   isAvailable,
 //   isConfirmed,
 //   startTime,
-//   endTime,
+//   timeReserved,
+//   providerId,
 // }
 
 const startTime = roundToNearestMinutes(new Date(), { roundingMethod: 'ceil', nearestTo: 15 });
@@ -23,6 +24,7 @@ const mockSchedule = [
         endTime: add(startTime, { minutes: 45 }),
         isAvailable: false,
         isConfirmed: true,
+        providerId: 1,
       },
     ],
     unconfirmedReservations: [
@@ -32,6 +34,7 @@ const mockSchedule = [
         endTime: add(startTime, { hours: 1, minutes: 45 }),
         isAvailable: false,
         isConfirmed: false,
+        providerId: 1,
       },
     ]
   },

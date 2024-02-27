@@ -5,8 +5,14 @@ const defaultContext = {
     userId: undefined, // This also handles app "routing"
     isProvider: false,
     isClient: false,
-    
+
     providerAvailability: mockSchedule
+}
+
+const GO_HOME_OBJECT = {
+  userId: undefined, 
+  isProvider: false,
+  isClient: false,
 }
 
 const AppContext = createContext(undefined);
@@ -51,4 +57,5 @@ export {
   AppContextConsumer, 
   useAppContext,
   defaultContext,
+  GO_HOME_OBJECT
 }

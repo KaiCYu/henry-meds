@@ -4,25 +4,16 @@ import { Button, Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import { find, toNumber } from 'lodash';
 
-import { useAppContext } from './AppContext';
+import { useAppContext, GO_HOME_OBJECT } from './AppContext';
 
-const GO_HOME_OBJECT = {
-  userId: undefined, 
-  isProvider: false,
-  isClient: false,
-}
 
-const Provider = () => {
+const Provider = ({ handleGoBack }) => {
   const [providerId, setProviderId] = useState(undefined);
   const [startTime, setStartTime] = useState(undefined);
   const [endTime, setEndTime] = useState(undefined);
   const { context, setContext } = useAppContext();
   const { providerAvailability } = context;
   const currentProviderAvailability = find(providerAvailability, (p) => p.providerId == providerId) // Be careful here, it could change to a string or number!
-
-  const handleGoBack = () => {
-    setContext({...context, ...GO_HOME_OBJECT})
-  }
 
   const saveAvailability = () => {
     if (!currentProviderAvailability) {
@@ -56,7 +47,7 @@ const Provider = () => {
 
   return (
     <div className="provider-container">
-        <Button variant="light" onClick={handleGoBack}>Back</Button>
+        <Button className="d-flex justify-content-start" variant="light" onClick={handleGoBack}>Back</Button>
         <Form onSubmit={saveAvailability}>
           <Form.Group controlId="providerId">
             <Form.Label>Provider Id:</Form.Label>

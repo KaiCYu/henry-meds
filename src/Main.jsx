@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap';
 
-import { useAppContext } from './AppContext';
+import { useAppContext, GO_HOME_OBJECT } from './AppContext';
 import { Provider } from './Provider';
 import { Client } from './Client';
 
@@ -23,32 +23,34 @@ const Main = () => {
       isClient: true,
     })
   }
-  
-  console.log('context:::: ', context);
+  const handleGoBack = () => {
+    setContext({...context, ...GO_HOME_OBJECT})
+  }
+
+  // console.log('context in main:::: ', context);
   return (
     <div className="App">
     <header className="App-header">
 
-      Are you a client or a provider?
-      <>
-
-      </>
       { 
-        !context.userId && (
+        !context.isProvider && !context.isClient && (
           <div>
-            <Button variant="primary" onClick={handleSetProvider}>Provider</Button>
-            <Button variant="primary" onClick={handleSetClient}>Client</Button>
+            Are you a client or a provider?
+            <div>
+              <Button variant="primary" onClick={handleSetProvider}>Provider</Button>
+              <Button variant="primary" onClick={handleSetClient}>Client</Button>
+            </div>
           </div>
         )
       }
       {
         context.isProvider && (
-          <Provider />
+          <Provider handleGoBack={handleGoBack} />
         )
       }
       {
         context.isClient && (
-          <Client />
+          <Client handleGoBack={handleGoBack} />
         )
       }
     </header>
